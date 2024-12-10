@@ -1,14 +1,4 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <link rel="stylesheet" href="../assets/css/all.min.css">
-    <link rel="stylesheet" href="../assets/css/fontawesome.min.css">
-    <link rel="stylesheet" href="./output.css">
-</head>
-<body>
+<?php include "./inc/header.php" ?>
 
     <header class="flex justify-between container py-3">
         <a class="text-primary font-bold text-2xl" href="./">GEOAFRICA</a>
@@ -104,7 +94,6 @@
     </main>
 
     <script type="text/javascript">
-
         inputOptions("continent", "continents");
         inputOptions("country", "countries");
         inputOptions("language", "languages");
@@ -136,5 +125,5 @@
             }
         }
     </script>
-</body>
-</html>
+
+<?php include "./inc/header.php" ?>
