@@ -1,6 +1,14 @@
 <?php 
     include("./inc/database.php");
     include("./inc/header.php");
+
+    $sql = "SELECT * FROM countries WHERE id_continent = 1";
+    $result = mysqli_query($conn, $sql);
+
+    $countries = [];
+    while ($data = mysqli_fetch_assoc($result)) {
+        $countries[] = $data;
+    }
 ?>
 
     <header class="flex justify-between container py-3">
