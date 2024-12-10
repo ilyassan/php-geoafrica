@@ -1,14 +1,4 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <link rel="stylesheet" href="../assets/css/all.min.css">
-    <link rel="stylesheet" href="../assets/css/fontawesome.min.css">
-    <link rel="stylesheet" href="./output.css">
-</head>
-<body>
+<?php include "./inc/header.php" ?>
 
     <header class="flex justify-between container py-3">
         <a class="text-primary font-bold text-2xl" href="./">GEOAFRICA</a>
@@ -113,5 +103,5 @@
 
         <button class="mx-auto bg-primary mt-8 py-1 px-3 text-white rounded-lg flex gap-2 items-center"><i class="fa fa-plus"></i>Add Country</button>
     </div>
-</body>
-</html>
+
+<?php include "./inc/footer.php" ?>
