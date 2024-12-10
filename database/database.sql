@@ -19,8 +19,12 @@ CREATE TABLE languages (
 
 CREATE TABLE countries (
     id_country INT AUTO_INCREMENT,
-    name varchar(20),
+    name VARCHAR(20),
     population INT,
+    shortname VARCHAR(2),
+    x INT,
+    y INT,
+    is_showed BOOLEAN DEFAULT FALSE,
     id_language INT,
     id_continent INT,
     PRIMARY KEY (id_country),
@@ -31,14 +35,14 @@ CREATE TABLE countries (
 CREATE TABLE cities (
     id_city INT AUTO_INCREMENT,
     name varchar(20),
-    type ENUM("capital", "not capital"),
+    is_capital BOOLEAN,
+    is_showed BOOLEAN DEFAULT FALSE,
     id_country INT,
     PRIMARY KEY (id_city),
     FOREIGN KEY (id_country) REFERENCES countries(id_country)
 );
 
 -- Inserting Data
-
 INSERT INTO continents (name) VALUES
 ('Africa');
 
@@ -52,66 +56,69 @@ INSERT INTO languages (name) VALUES
 ('Somali'),
 ('Tamazight');
 
-INSERT INTO countries (name, population, id_language, id_continent) VALUES
-('Egypte', 104000000, 1, 1),
-('Kenya', 53771296, 2, 1),
-('South Africa', 59308690, 3, 1),
-('Ethiopia', 123379000, 4, 1),
-('Nigeria', 211400708, 5, 1),
-('Somalia', 16900000, 7, 1),
-('Morocco', 37600000, 8, 1),
-('Algeria', 44900000, 1, 1),
-('Tanzania', 63000000, 2, 1);
+INSERT INTO countries (name, population, shortname, id_language, id_continent, x, y) VALUES
+('Egypt', 104000000, 'eg', 1, 1, 60, 10),
+('Kenya', 53771296, 'ke', 2, 1, 73, 48),
+('South Africa', 59308690, 'za', 3, 1, 55, 90),
+('Ethiopia', 123379000, 'et', 4, 1, 74, 35),
+('Nigeria', 211400708, 'ng', 5, 1, 37, 35),
+('Somalia', 16900000, 'so', 7, 1, 85, 35),
+('Morocco', 37600000, 'ma', 8, 1, 15, 6),
+('Algeria', 44900000, 'dz', 1, 1, 30, 10),
+('Tanzania', 63000000, 'tz', 2, 1, 70, 58),
+('Wakando', 192028, 'eg', 1, 1, 60, 10);
 
-INSERT INTO cities (name, type, id_country) VALUES
-('Cairo', 'capital', 1),
-('Alexandria', 'not capital', 1),
-('Giza', 'not capital', 1),
-('Nairobi', 'capital', 2),
-('Mombasa', 'not capital', 2),
-('Kisumu', 'not capital', 2),
-('Pretoria', 'capital', 3),
-('Cape Town', 'not capital', 3),
-('Johannesburg', 'not capital', 3),
-('Addis Ababa', 'capital', 4),
-('Dire Dawa', 'not capital', 4),
-('Gondar', 'not capital', 4),
-('Abuja', 'capital', 5),
-('Lagos', 'not capital', 5),
-('Kano', 'not capital', 5),
-('Mogadishu', 'capital', 6),
-('Hargeisa', 'not capital', 6),
-('Bosaso', 'not capital', 6),
-('Rabat', 'capital', 7),
-('Casablanca', 'not capital', 7),
-('Marrakech', 'not capital', 7),
-('Fes', 'not capital', 7),
-('Tangier', 'not capital', 7),
-('Agadir', 'not capital', 7),
-('Chefchaouen', 'not capital', 7),
-('Ouarzazate', 'not capital', 7),
-('Algiers', 'capital', 8),
-('Oran', 'not capital', 8),
-('Constantine', 'not capital', 8);
+INSERT INTO cities (name, is_capital, id_country) VALUES
+('Cairo', 1, 1),
+('Alexandria', 0, 1),
+('Giza', 0, 1),
+('Nairobi', 1, 2),
+('Mombasa', 0, 2),
+('Kisumu', 0, 2),
+('Pretoria', 1, 3),
+('Cape Town', 0, 3),
+('Johannesburg', 0, 3),
+('Addis Ababa', 1, 4),
+('Dire Dawa', 0, 4),
+('Gondar', 0, 4),
+('Abuja', 1, 5),
+('Lagos', 0, 5),
+('Kano', 0, 5),
+('Mogadishu', 1, 6),
+('Hargeisa', 0, 6),
+('Bosaso', 0, 6),
+('Rabat', 1, 7),
+('Casablanca', 0, 7),
+('Marrakech', 0, 7),
+('Fes', 0, 7),
+('Tangier', 0, 7),
+('Agadir', 0, 7),
+('Chefchaouen', 0, 7),
+('Ouarzazate', 0, 7),
+('Algiers', 1, 8),
+('Oran', 0, 8),
+('Constantine', 0, 8),
+('Dodoma', 1, 9),
+('Dar es Salaam', 0, 9),
+('Arusha', 0, 9),
+('Mbeya', 0, 9),
+('Mwanza', 0, 9),
+('Tanga', 0, 9),
+('Morogoro', 0, 9);
 
-
--- Ajouter un pays africain avec ses informations (population, langue, villes).
--- Modifier les détails d'un pays ou d'une ville.
--- Supprimer un pays et toutes ses villes associées.
--- Afficher la liste des pays africains et leurs détails.
 
 -- Update country data
 UPDATE countries
-SET countries.name = "Egypte"
-WHERE countries.name = "Egypt";
+SET countries.name = "Wakanda"
+WHERE countries.name = "Wakando";
 
--- Delete a country with it cities
+-- Delete a country with its cities
 DELETE FROM cities
-WHERE cities.id_country = (SELECT id_country FROM countries WHERE countries.name = "Egypt");
+WHERE cities.id_country = (SELECT id_country FROM countries WHERE countries.name = "Wakanda");
 DELETE FROM countries
-WHERE countries.name = "Egypt"; 
+WHERE countries.name = "Wakanda"; 
 
--- Show list of the countries with their informations
+-- Show list of the countries with their information
 SELECT
     countries.name AS country_name,
     cities.name AS capital,
@@ -123,7 +130,7 @@ FROM
 JOIN
     cities
     ON countries.id_country = cities.id_country
-    AND cities.type = 'capital'
+    AND cities.is_capital = 1
 JOIN
     languages
     ON countries.id_language = languages.id_language
@@ -131,5 +138,4 @@ JOIN
     continents
     ON countries.id_continent = continents.id_continent
 WHERE
-    continents.name = 'Africa'
-;
+    continents.name = 'Africa';
