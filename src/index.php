@@ -1,4 +1,7 @@
-<?php include "./inc/header.php" ?>
+<?php 
+    include("./inc/database.php");
+    include("./inc/header.php");
+?>
 
     <header class="flex justify-between container py-3">
         <a class="text-primary font-bold text-2xl" href="./">GEOAFRICA</a>
