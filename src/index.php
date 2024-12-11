@@ -8,11 +8,11 @@
     $countries = [];
     while ($data = mysqli_fetch_assoc($result)) {
         $countries[] = $data;
-    }
+    };
 
-    function countryMapHtmlElement($country, $countryShortName, $x, $y) {
+    function countryMapHtmlElement($id, $country, $countryShortName, $x, $y) {
         return "
-            <div class='absolute cursor-pointer group' style='left: $x%; top: $y%;'>
+            <a href='./details.php?id=$id' class='absolute cursor-pointer group' style='left: $x%; top: $y%;'>
                 <div class='relative p-0.5 bg-primary rounded-sm z-20 group-hover:scale-[2.75] group-hover:rounded-b-none group-hover:z-30 duration-500 transition-all'>
                     <div class='flag max-w-10'>
                         <img class='w-full min-h-7' src='https://flagcdn.com/w320/$countryShortName.png' alt='$country'>
@@ -23,20 +23,20 @@
                     </div>
                 </div>
                 <span class='absolute left-1/2 -translate-x-1/2 top-[98%] border-8 border-transparent border-t-primary'></span>
-            </div>
+            </a>
         ";
     }    
     
-    function countryCardHtml($name, $imageUrl, $description) {
+    function countryCardHtml($id, $name, $imageUrl, $description) {
         return "
-            <div class='h-56 cursor-pointer group relative rounded-lg overflow-hidden'>
+            <a href='./details.php?id=$id'  class='h-56 cursor-pointer group relative rounded-lg overflow-hidden'>
                 <img class='min-h-full' src='$imageUrl' alt='$name'>
                 <div class='absolute top-0 right-0 group-hover:right-full transition-all duration-300 w-full h-full bg-primary bg-opacity-45'></div>
                 <div class='absolute top-0 left-0 group-hover:left-full transition-all duration-300 w-full h-full text-center p-2 py-4 text-white'>
                     <span class='text-2xl font-bold'>$name</span>
                     <p class='text-xs mt-7'>$description</p>
                 </div>
-            </div>
+            </a>
         ";
     }    
 ?>
@@ -51,7 +51,7 @@
             <img class="w-full" src="../assets/images/africa (2).svg" alt="Africa Map">
 
             <?php foreach ($countries as $country) {
-                echo countryMapHtmlElement($country["name"], $country["shortname"], $country["x"], $country["y"]);
+                echo countryMapHtmlElement($country["id_country"], $country["name"], $country["shortname"], $country["x"], $country["y"]);
             }?>
         </div>
     </main>
@@ -60,7 +60,7 @@
         <h1 class="text-center font-bold text-3xl mb-12">Explore Countries</h1>
         <div class="grid grid-cols-4 gap-2">
             <?php foreach ($countries as $country) {
-                echo countryCardHtml($country['name'], $country['image_url'], $country['description']);
+                echo countryCardHtml($country["id_country"] ,$country['name'], $country['image_url'], $country['description']);
             }?>
         </div>
 
