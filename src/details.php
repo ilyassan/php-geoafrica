@@ -64,7 +64,7 @@
                         </div>
                         <div class="flex flex-col gap-1.5">
                             <label class="text-xl" for="population">Population:</label>
-                            <input class="text-xl bg-[#eee] outline-none px-3 py-1 rounded-lg" type="number" step="100000" value="<?= $country["population"] ?>" name="population" id="population">
+                            <input class="text-xl bg-[#eee] outline-none px-3 py-1 rounded-lg" type="number" value="<?= $country["population"] ?>" name="population" id="population">
                         </div>
                         <div class="relative flex flex-col gap-1.5">
                             <label class="text-xl" for="population">Language:</label>
