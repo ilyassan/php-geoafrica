@@ -23,6 +23,14 @@
         $cities[] = $city; 
     }
 
+    $sql = "SELECT * FROM languages";
+
+    $data = mysqli_query($conn, $sql);
+    $languages = [];
+    while ($language = mysqli_fetch_assoc($data)) {
+        $languages[] = $language; 
+    }
+
     $showedCities = [];
     $unShowedCities = [];
     foreach($cities as $city){
@@ -47,27 +55,31 @@
                     <img src="<?= $country["image_url"] ?>" alt="<?= $country["name"] ?>">
                 </div>
         
-                <div class="flex flex-1 justify-between">
-                    <form class="flex flex-col gap-3">
+                <form class="flex flex-1 justify-between" method="POST">
+                    <div class="flex flex-col gap-3">
                         <div class="flex flex-col gap-1.5">
                             <label class="text-xl" for="country">Country:</label>
-                            <input disabled class="text-xl bg-[#eee] outline-none px-3 py-1 rounded-lg" type="text" value="<?= $country["name"] ?>" name="country" id="country">
+                            <input disabled class="text-xl bg-[#eee] outline-none px-3 py-1 rounded-lg" type="text" value="<?= $country["name"] ?>" id="country">
+                            <input class="hidden" type="text" value="<?= $country["id_country"] ?>" name="id_country">
                         </div>
                         <div class="flex flex-col gap-1.5">
                             <label class="text-xl" for="population">Population:</label>
                             <input class="text-xl bg-[#eee] outline-none px-3 py-1 rounded-lg" type="number" step="100000" value="<?= $country["population"] ?>" name="population" id="population">
                         </div>
-                        <div class="flex flex-col gap-1.5">
+                        <div class="relative flex flex-col gap-1.5">
                             <label class="text-xl" for="population">Language:</label>
-                            <input class="text-xl bg-[#eee] outline-none px-3 py-1 rounded-lg" type="text" value="<?= $country["language"] ?>" name="language" id="language">
+                            <input data-id="<?= $country["id_language"]?>" class="text-xl bg-[#eee] outline-none px-3 py-1 rounded-lg" type="text" value="<?= $country["language"] ?>" name="language" id="language">
+                            <input id="id_language" class="hidden" type="text" value="<?= $country["id_language"] ?>" name="id_language">
+                            <div id="languages" class="flex hidden overflow-hidden absolute top-[110%] z-10 bg-[#eee] rounded-lg w-full flex-col">
+                            </div>
                         </div>
-                    </form>
-        
-                    <div class="flex flex-1 items-start justify-end gap-4">
-                        <span class="bg-primary px-2 py-1 rounded-lg text-white">Save <i class="fa-solid fa-pen-to-square"></i></span>
-                        <span class="bg-primary px-2 py-1 rounded-lg text-white">Delete <i class="fa-solid fa-delete-left"></i></span>
                     </div>
-                </div>
+
+                    <div class="flex flex-1 items-start justify-end gap-4">
+                        <button type="submit" formaction="./controllers/country/updateCountry.php" class="bg-primary px-2 py-1 rounded-lg text-white">Save <i class="fa-solid fa-pen-to-square"></i></button>
+                        <button type="submit" formaction="./controllers/country/deleteCountry.php" class="bg-primary px-2 py-1 rounded-lg text-white">Delete <i class="fa-solid fa-delete-left"></i></button>
+                    </div>
+                </form>
             </div>
         </div>
 
@@ -97,29 +109,25 @@
 
         const unShowedCities = <?= json_encode($unShowedCities)?>;
         const showedCities = <?= json_encode($showedCities)?>;
+        const languages = <?= json_encode($languages)?>;
 
         const cityInput = document.getElementById("city");
         const citiesOptionsContainer = document.getElementById("cities");
         const citiesTagsContainer = document.getElementById("cities-tags");
         const citiesCardsContainer = document.getElementById("cities-cards");
 
+        const languageInput = document.getElementById("language");
+        const languagesContainer = document.getElementById("languages");
+
         showData();
 
         function showData(){
-            citiesOptionsContainer.innerHTML = "";
             citiesTagsContainer.innerHTML = "";
             citiesCardsContainer.innerHTML = "";
 
-            if (unShowedCities != 0) {
-                let lastCity = unShowedCities[unShowedCities.length - 1];
+            filterCitiesOptions(unShowedCities);
+            searchLanguage();
 
-                for (let city of unShowedCities) {
-                    let style = city == lastCity ? "": "border-b";
-                    cities.innerHTML += `<span data-id='${city['id_city']}' class='cursor-pointer hover:bg-slate-200 px-2 py-1 ${style} border-b-black'>${city['name']}</span>`;
-                }
-            } else {
-                cities.innerHTML = "<span class='px-2 py-1 text-gray-500'>No cities available</span>";
-            }
             for(let city of showedCities){
                 citiesTagsContainer.innerHTML += `
                     <div style='border-top-left-radius: .3rem; border-bottom-left-radius: .3rem;' class='flex items-center gap-3 relative text-white bg-primary px-2'>
@@ -144,6 +152,21 @@
                         }
                     </div>`;
                 }
+        }
+
+        function filterCitiesOptions(array){
+            citiesOptionsContainer.innerHTML = "";
+
+            if (array != 0) {
+                let lastCity = array[array.length - 1];
+
+                for (let city of array) {
+                    let style = city == lastCity ? "": "border-b";
+                    citiesOptionsContainer.innerHTML += `<span data-id='${city['id_city']}' class='cursor-pointer hover:bg-slate-200 px-2 py-1 ${style} border-b-black'>${city['name']}</span>`;
+                }
+            } else {
+                citiesOptionsContainer.innerHTML = "<span class='px-2 py-1 text-gray-500'>No cities available</span>";
+            }
 
             const citiesOptions = Array.from(citiesOptionsContainer.children);
             citiesOptions.forEach(option => {
@@ -157,9 +180,45 @@
             });
         }
 
+        function filterLanguagesOptions(array){
+            languagesContainer.innerHTML = "";
 
-        cityInput.onblur = closeOptionsContainer;
-        cityInput.onfocus = openOptionsContainer;
+            let lastLanguage = array[array.length - 1];
+
+            for (let language of array) {
+                let style = language == lastLanguage ? "": "border-b";
+                languagesContainer.innerHTML += `<span data-id='${language['id_language']}' class='cursor-pointer hover:bg-slate-200 px-2 py-1 ${style} border-b-black'>${language['name']}</span>`;
+            }
+
+            const languageOptions = Array.from(languagesContainer.children);
+            languageOptions.forEach(option => {
+                option.onmousedown = function(){
+                    let languageId = option.getAttribute("data-id");
+                    let language = option.textContent;
+
+                    languageInput.value = language;
+                    document.getElementById("id_language").value = languageId;
+                }
+            });
+        }
+
+        cityInput.onblur = () => closeOptionsContainer(citiesOptionsContainer, searchCity);
+        cityInput.onfocus = () => openOptionsContainer(citiesOptionsContainer, searchCity);
+        cityInput.onkeyup = searchCity;
+
+        function searchCity(){
+            let filteredArray = unShowedCities.filter(city => city["name"].toLowerCase().search(cityInput.value.toLowerCase()) != -1);
+            filterCitiesOptions(filteredArray);
+        }
+
+        languageInput.onblur = () => closeOptionsContainer(languagesContainer, searchLanguage);
+        languageInput.onfocus = () => openOptionsContainer(languagesContainer, searchLanguage);
+        languageInput.onkeyup = searchLanguage;
+
+        function searchLanguage(){
+            let filteredArray = languages.filter(language => language["name"].toLowerCase().search(languageInput.value.toLowerCase()) != -1);
+            filterLanguagesOptions(filteredArray);
+        }
 
         const addCityButton = document.getElementById("add-city");
         addCityButton.onclick = async function(){
@@ -184,11 +243,20 @@
                     });
         }
 
-        function closeOptionsContainer() {
-            citiesOptionsContainer.classList.add("hidden");
+        const populationInput = document.getElementById("population");
+        populationInput.onkeyup = () => {
+            if (parseInt(populationInput.value) <= 0) {
+                populationInput.value = 1;
+            }
         }
-        function openOptionsContainer() {
-            citiesOptionsContainer.classList.remove("hidden");
+
+        function closeOptionsContainer(element, func) {
+            func();
+            element.classList.add("hidden");
+        }
+        function openOptionsContainer(element, func) {
+            func();
+            element.classList.remove("hidden");
         }
     </script>
 
