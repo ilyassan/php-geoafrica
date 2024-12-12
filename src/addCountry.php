@@ -36,7 +36,7 @@
                     <div class="relative flex-1">
                         <div class="flex flex-col gap-2">
                             <label class="text-lg" for="continent">Continent:</label>
-                            <input id="continent" class="bg-[#eee] rounded-lg py-2 pl-2 pr-8 outline-none" type="text" placeholder="Select a continent">
+                            <input autocomplete="off"  id="continent" class="bg-[#eee] rounded-lg py-2 pl-2 pr-8 outline-none" type="text" placeholder="Select a continent">
                         </div>
                         <div id="continents" class="flex hidden overflow-hidden absolute top-[110%] z-10 bg-[#eee] rounded-lg w-full flex-col"></div>
                         <input id="id_continent" name="id_continent" class="hidden" type="text">
@@ -44,7 +44,7 @@
                     <div class="relative flex-1">
                         <div class="flex flex-col gap-2">
                             <label class="text-lg" for="country">Country:</label>
-                            <input id="country" class="bg-[#eee] rounded-lg py-2 pl-2 pr-8 outline-none" type="text" placeholder="Search for a country">
+                            <input autocomplete="off"  id="country" class="bg-[#eee] rounded-lg py-2 pl-2 pr-8 outline-none" type="text" placeholder="Search for a country">
                         </div>
                         <div id="countries" class="flex hidden overflow-hidden absolute top-[110%] z-10 bg-[#eee] rounded-lg w-full flex-col"></div>
                         <input id="id_country" name="id_country" class="hidden" type="text">
@@ -54,13 +54,13 @@
                 <div class="flex gap-x-2 flex-col md:flex-row justify-between">
                     <div class="flex-1 flex flex-col gap-2">
                         <label class="text-lg" for="population">Population:</label>
-                        <input class="bg-[#eee] outline-none px-3 py-2 rounded-lg" type="number" min="1" step="100000" placeholder="Country Population" name="population" id="population">
+                        <input autocomplete="off"  class="bg-[#eee] outline-none px-3 py-2 rounded-lg" type="number" min="1" step="100000" placeholder="Country Population" name="population" id="population">
                     </div>
 
                     <div class="relative flex-1">
                         <div class="flex flex-col gap-2">
                             <label class="text-lg" for="language">Language:</label>
-                            <input id="language" class="bg-[#eee] rounded-lg py-2 pl-2 pr-8 outline-none" type="text" placeholder="Select the language">
+                            <input autocomplete="off"  id="language" class="bg-[#eee] rounded-lg py-2 pl-2 pr-8 outline-none" type="text" placeholder="Select the language">
                         </div>
                         <div id="languages" class="flex hidden overflow-hidden absolute top-[110%] z-10 bg-[#eee] rounded-lg w-full flex-col"></div>
                         <input id="id_language" name="id_language" class="hidden" type="text">
@@ -70,7 +70,7 @@
                     <div class="flex flex-col gap-2">
                         <label class="text-lg" for="language">Cities:</label>
                         <div class="relative">
-                            <input id="city" class="w-full bg-[#eee] rounded-lg py-2 pl-2 pr-8 outline-none" type="text" placeholder="Add a city">
+                            <input autocomplete="off"  id="city" class="w-full bg-[#eee] rounded-lg py-2 pl-2 pr-8 outline-none" type="text" placeholder="Add a city">
                             <i id="add-city" class="absolute cursor-pointer text-primary text-xl right-2 top-1/2 -translate-y-1/2 fa fa-plus"></i>
                         </div>
                     </div>
