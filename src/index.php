@@ -2,7 +2,7 @@
     include("./inc/database.php");
     include("./inc/header.php");
 
-    $sql = "SELECT * FROM countries WHERE id_continent = 1";
+    $sql = "SELECT * FROM countries WHERE id_continent = 1 AND is_showed = 1";
     $result = mysqli_query($conn, $sql);
 
     $countries = [];

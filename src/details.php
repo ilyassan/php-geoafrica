@@ -64,11 +64,11 @@
                         </div>
                         <div class="flex flex-col gap-1.5">
                             <label class="text-xl" for="population">Population:</label>
-                            <input class="text-xl bg-[#eee] outline-none px-3 py-1 rounded-lg" type="number" value="<?= $country["population"] ?>" name="population" id="population">
+                            <input autocomplete="off" class="text-xl bg-[#eee] outline-none px-3 py-1 rounded-lg" type="number" value="<?= $country["population"] ?>" name="population" id="population">
                         </div>
                         <div class="relative flex flex-col gap-1.5">
                             <label class="text-xl" for="population">Language:</label>
-                            <input data-id="<?= $country["id_language"]?>" class="text-xl bg-[#eee] outline-none px-3 py-1 rounded-lg" type="text" value="<?= $country["language"] ?>" name="language" id="language">
+                            <input autocomplete="off"  data-id="<?= $country["id_language"]?>" class="text-xl bg-[#eee] outline-none px-3 py-1 rounded-lg" type="text" value="<?= $country["language"] ?>" name="language" id="language">
                             <input id="id_language" class="hidden" type="text" value="<?= $country["id_language"] ?>" name="id_language">
                             <div id="languages" class="flex hidden overflow-hidden absolute top-[110%] z-10 bg-[#eee] rounded-lg w-full flex-col">
                             </div>
@@ -178,9 +178,11 @@
 
             const citiesOptions = Array.from(citiesOptionsContainer.children);
             citiesOptions.forEach(option => {
+                let cityId = option.getAttribute("data-id");
+                let city = option.textContent;
+                if (!cityId) return;
+
                 option.onmousedown = function(){
-                    let cityId = option.getAttribute("data-id");
-                    let city = option.textContent;
 
                     cityInput.value = city;
                     cityInput.setAttribute("data-id", cityId);
