@@ -43,7 +43,7 @@
 
     <header class="flex justify-between container py-5">
         <a class="text-primary font-bold text-2xl" href="./">GEOAFRICA</a>
-        <button class="bg-primary py-1 px-3 text-white rounded-lg flex gap-2 items-center"><i class="fa fa-plus"></i>Add Country</button>
+        <a href="./addCountry.php" class="bg-primary py-1 px-3 text-white rounded-lg flex gap-2 items-center"><i class="fa fa-plus"></i>Add Country</a>
     </header>
 
     <main class="flex py-10 justify-center bg-primary bg-opacity-50">
