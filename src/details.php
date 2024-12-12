@@ -131,11 +131,19 @@
             for(let city of showedCities){
                 citiesTagsContainer.innerHTML += `
                     <div style='border-top-left-radius: .3rem; border-bottom-left-radius: .3rem;' class='flex items-center gap-3 relative text-white bg-primary px-2'>
-                        <i class='cursor-pointer text-sm rotate-180 fa-solid fa-delete-left'></i>
+                        <i data-id="${city["id_city"]}" class='remove-city cursor-pointer text-sm rotate-180 fa-solid fa-delete-left'></i>
                         ${city["name"]}
                         <span class='absolute w-0 h-0 -right-[16px] border-y-[16px] border-y-transparent border-l-[16px] border-l-primary'></span>
                     </div>`;   
             }
+
+            document.querySelectorAll(".remove-city").forEach((button) =>{
+                button.onclick= function(){
+                    let cityId = button.getAttribute("data-id");
+                    removeCity(cityId);
+                }
+            })
+
 
             for( let city of showedCities){
                 citiesCardsContainer.innerHTML += `
@@ -240,6 +248,22 @@
                             "Content-Type": "application/json"
                         },
                         body: JSON.stringify({ id: cityId })
+                    });
+        }
+
+        async function removeCity(id){
+            let cityIndex = showedCities.findIndex(city => city["id_city"] == id);
+
+            let city = showedCities.splice(cityIndex, 1)[0];
+            unShowedCities.push(city);
+            showData();
+
+            await fetch("./api/removeCity.php", {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json"
+                        },
+                        body: JSON.stringify({ id })
                     });
         }
 
