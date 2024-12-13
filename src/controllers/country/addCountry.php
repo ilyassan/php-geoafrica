@@ -2,13 +2,14 @@
 session_start();
 include("../../inc/database.php");
 
+$continentId = filter_input(INPUT_POST, 'id_continent', FILTER_SANITIZE_NUMBER_INT);
 $population = filter_input(INPUT_POST, 'population', FILTER_SANITIZE_NUMBER_INT);
 $countryId = filter_input(INPUT_POST, 'id_country', FILTER_SANITIZE_NUMBER_INT);
 $languageId = filter_input(INPUT_POST, 'id_language', FILTER_SANITIZE_NUMBER_INT);
 $cities_ids = array_map('intval', json_decode($_POST['ids_cities'], true));
 
 
-if ($countryId && $languageId && $population && $population >= 1) {
+if ($continentId && $countryId && $languageId && $population && $population >= 1) {
     $stmt = $conn->prepare("UPDATE countries 
             SET population = ?, id_language = ?, is_showed = 1
             WHERE id_country = ?");
