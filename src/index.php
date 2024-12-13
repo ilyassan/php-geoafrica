@@ -42,7 +42,7 @@
                 <div class='absolute top-0 right-0 group-hover:right-full transition-all duration-300 w-full h-full bg-primary bg-opacity-45'></div>
                 <div class='absolute top-0 left-0 group-hover:left-full transition-all duration-300 w-full h-full text-center p-2 py-4 text-white'>
                     <span class='text-2xl font-bold'>$name</span>
-                    <p class='text-xs mt-7'>$description</p>
+                    <p class='lg:text-sm mt-6'>$description</p>
                 </div>
             </a>
         ";
