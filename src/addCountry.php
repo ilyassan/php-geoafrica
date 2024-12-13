@@ -54,7 +54,7 @@
                 <div class="flex gap-x-2 flex-col md:flex-row justify-between">
                     <div class="flex-1 flex flex-col gap-2">
                         <label class="text-lg" for="population">Population:</label>
-                        <input autocomplete="off"  class="bg-[#eee] outline-none px-3 py-2 rounded-lg" type="number" min="1" step="100000" placeholder="Country Population" name="population" id="population">
+                        <input autocomplete="off"  class="bg-[#eee] outline-none px-3 py-2 rounded-lg" type="number" placeholder="Country Population" name="population" id="population">
                     </div>
 
                     <div class="relative flex-1">
@@ -80,7 +80,7 @@
                 </div>
                 <div id="cities-tags" class="flex gap-2">
                 </div>
-                <input type="text" class="hidden" name="ids_cities" id="ids_cities">
+                <input type="text" class="hidden" name="ids_cities" id="ids_cities" value="[]">
 
                 <button class="flex mt-6 gap-2.5 items-center w-fit bg-primary px-4 py-1 rounded-lg text-white">Add <i class="fa-solid fa-pen-to-square"></i></button>
             </form>
