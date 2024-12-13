@@ -9,17 +9,23 @@ $cities_ids = array_map('intval', json_decode($_POST['ids_cities'], true));
 
 
 if ($countryId && $languageId && $population && $population >= 1) {
-    $sql = "UPDATE countries 
-            SET population = $population, id_language = $languageId, is_showed = 1
-            WHERE id_country = $countryId";
+    $stmt = $conn->prepare("UPDATE countries 
+            SET population = ?, id_language = ?, is_showed = 1
+            WHERE id_country = ?");
+    $stmt->bind_param("iii", $population, $languageId, $countryId);
+    $stmt->execute();
+
+    if (!empty($cities_ids)) {
+        $placeholders = implode(',', array_fill(0, count($cities_ids), '?'));
+
+        $sql = "UPDATE cities SET is_showed = 1 WHERE id_city IN ($placeholders)";
+        $stmt = $conn->prepare($sql);
     
-    mysqli_query($conn, $sql);
-
-    $sql = "UPDATE cities
-            SET is_showed = 1
-            WHERE id_city IN (" . implode(',', $cities_ids) . ")";
-
-    mysqli_query($conn, $sql);
+        $types = str_repeat('i', count($cities_ids));
+        $stmt->bind_param($types, ...$cities_ids);
+    
+        $stmt->execute();
+    }
 
     $_SESSION['status'] = 'success';
     $_SESSION['message'] = 'Country added successfully!';

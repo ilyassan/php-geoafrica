@@ -3,11 +3,13 @@
 
     $countryId = intval($_GET["id"]);
 
-    $sql = "SELECT * FROM cities WHERE id_country = $countryId";
-    $data = mysqli_query($conn, $sql);
+    $stmt = $conn->prepare("SELECT * FROM cities WHERE id_country = ?");
+    $stmt->bind_param("i", $countryId);
+    $stmt->execute();
+    $data = $stmt->get_result();
 
     $cities = [];
-    while($city = mysqli_fetch_assoc($data)){
+    while($city = $data->fetch_assoc()){
         $cities[] = $city;
     }
 

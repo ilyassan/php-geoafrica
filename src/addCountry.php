@@ -195,6 +195,8 @@
         const continentInput = document.getElementById("continent");
         continentInput.onkeyup = (e) => filterSearch(e, continentsContainer, continents, 'id_continent');
 
+        cityInput.onkeyup = (e) => filterSearch(e, citiesOptionsContainer, cities, 'id_city');
+
         function filterSearch(e, container, array, idKey){
             let filteredArray = array.filter(item => item["name"].toLowerCase().search(e.target.value.toLowerCase()) != -1);
             showData(container, filteredArray, idKey);

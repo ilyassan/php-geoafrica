@@ -1,6 +1,6 @@
 <?php
+session_start();
 include("../../inc/database.php");
-
 
 $countryId = filter_input(INPUT_POST, 'id_country', FILTER_SANITIZE_NUMBER_INT);
 
@@ -16,7 +16,13 @@ if (isset($countryId)) {
             WHERE id_country = $countryId";
     
     mysqli_query($conn, $sql);
-    header("Location: ../../");
+
+    $_SESSION['status'] = 'success';
+    $_SESSION['message'] = 'Country deleted successfully!';
+} else {
+    $_SESSION['status'] = 'error';
+    $_SESSION['message'] = 'Internal server error.';
 }
 
+    header("Location: ../../");
 ?>
