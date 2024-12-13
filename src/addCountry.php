@@ -28,7 +28,7 @@
         <h1 class="mb-12 font-bold text-center text-3xl">Add Country</h1>
 
         <div class="flex gap-8 container">
-            <div class="w-1/2 max-h-fit rounded-xl overflow-hidden border-4 border-primary">
+            <div class="hidden sm:block w-1/2 max-h-fit rounded-xl overflow-hidden border-4 border-primary">
                 <img class="scale-105" src="../assets/images/world.jpg" alt="Map">
             </div>
             <form action="./controllers/country/addCountry.php" method="POST" class="flex flex-1 flex-col gap-3">

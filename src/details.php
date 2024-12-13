@@ -53,15 +53,15 @@
     </header>
 
     <main class="pt-6 pb-12">
-        <h1 class="mb-12 font-bold text-center text-3xl">Country Details</h1>
+        <h1 class="mb-12 font-bold text-center text-3xl">Country</h1>
 
         <div class="container">
-            <div class="flex items-center gap-12">
-                <div class="max-w-[28rem] overflow-hidden rounded-xl">
+            <div class="flex w-fit mx-auto sm:w-full sm:mx-0 flex-col sm:flex-row items-center gap-6 lg:gap-12">
+                <div class="max-w-[34rem] sm:max-w-[28rem] overflow-hidden rounded-xl">
                     <img src="<?= $country["image_url"] ?>" alt="<?= $country["name"] ?>">
                 </div>
         
-                <form class="flex flex-1 justify-between" method="POST">
+                <form class="flex w-full flex-wrap flex-col gap-4 md:flex-row flex-1 justify-between" method="POST">
                     <div class="flex flex-col gap-3">
                         <div class="flex flex-col gap-1.5">
                             <label class="text-xl" for="country">Country:</label>
@@ -81,9 +81,11 @@
                         </div>
                     </div>
 
-                    <div class="flex flex-1 items-start justify-end gap-4">
-                        <button type="submit" formaction="./controllers/country/updateCountry.php" class="bg-primary px-2 py-1 rounded-lg text-white">Save <i class="fa-solid fa-pen-to-square"></i></button>
-                        <button type="submit" formaction="./controllers/country/deleteCountry.php" class="bg-primary px-2 py-1 rounded-lg text-white">Delete <i class="fa-solid fa-delete-left"></i></button>
+                    <div class="md:justify-end">
+                        <div class="flex w-fit flex-1 items-start gap-3">
+                            <button type="submit" formaction="./controllers/country/updateCountry.php" class="bg-primary px-2 py-1 rounded-lg text-white">Save <i class="fa-solid fa-pen-to-square"></i></button>
+                            <button type="submit" formaction="./controllers/country/deleteCountry.php" class="bg-primary px-2 py-1 rounded-lg text-white">Delete <i class="fa-solid fa-delete-left"></i></button>
+                        </div>
                     </div>
                 </form>
             </div>
@@ -93,9 +95,9 @@
 
         <div class="container">
             <h1 class="text-center font-bold text-3xl mb-8">Cities</h1>
-            <div class="flex gap-14 mb-10">
+            <div class="flex flex-col sm:flex-row gap-4 sm:gap-14 mb-10">
                 <div class="relative">
-                    <div class="relative">
+                    <div class="relative w-fit">
                         <input id="city" class="bg-[#eee] rounded-lg py-1 pl-2 pr-8 outline-none" type="text" placeholder="Add a city">
                         <i id="add-city" class="absolute cursor-pointer text-primary text-xl right-1 top-1/2 -translate-y-1/2 fa fa-plus"></i>
                     </div>
@@ -106,7 +108,7 @@
                 </div>
             </div>
 
-            <div id="cities-cards" class="grid grid-cols-4 gap-2">
+            <div id="cities-cards" class="grid justify-center sm:grid-cols-3 lg:grid-cols-4 gap-2">
             </div>
         </div>
     </main>
@@ -153,7 +155,7 @@
 
             for( let city of showedCities){
                 citiesCardsContainer.innerHTML += `
-                    <div class='card cursor-pointer relative rounded-lg overflow-hidden'>
+                    <div class='card max-w-96 cursor-pointer relative rounded-lg overflow-hidden'>
                         <img src='https://ilyassan.github.io/VisitMorocco/dev/assets/images/homepage/img_explore/safi.jpg' alt='morocco'>
                         <div class='flex items-center justify-center absolute top-0 right-0 w-full h-full bg-primary bg-opacity-45'>
                             <span class='text-2xl font-bold text-white'>${city["name"]}</span>

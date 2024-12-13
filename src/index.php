@@ -50,15 +50,17 @@
         <div class="max-w-2xl relative">
             <img class="w-full" src="../assets/images/africa (2).svg" alt="Africa Map">
 
+            <div id="map-cities">
             <?php foreach ($countries as $country) {
                 echo countryMapHtmlElement($country["id_country"], $country["name"], $country["shortname"], $country["x"], $country["y"]);
             }?>
+            </div>
         </div>
     </main>
 
     <div class="container pt-6 pb-12">
         <h1 class="text-center font-bold text-3xl mb-12">Explore Countries</h1>
-        <div class="grid grid-cols-4 gap-2">
+        <div class="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2">
             <?php foreach ($countries as $country) {
                 echo countryCardHtml($country["id_country"] ,$country['name'], $country['image_url'], $country['description']);
             }?>
@@ -66,5 +68,14 @@
 
         <a href="./addCountry.php" class="mx-auto w-fit bg-primary mt-8 py-1 px-3 text-white rounded-lg flex gap-2 items-center"><i class="fa fa-plus"></i>Add Country</a>
     </div>
+
+    <script>
+        if (screen.width < 600 || document.body.clientWidth < 600) {
+            Array.from(document.getElementById("map-cities").children).forEach((element) =>{
+                element.style.left = `${parseInt(element.style.left) - 2.35}%`;
+                element.style.top = `${parseInt(element.style.top) - 2.35}%`;
+            })
+        }
+    </script>
 
 <?php include "./inc/footer.php" ?>
