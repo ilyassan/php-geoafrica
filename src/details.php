@@ -203,10 +203,15 @@
 
             let lastLanguage = array[array.length - 1];
 
-            for (let language of array) {
-                let style = language == lastLanguage ? "": "border-b";
-                languagesContainer.innerHTML += `<span data-id='${language['id_language']}' class='cursor-pointer hover:bg-slate-200 px-2 py-1 ${style} border-b-black'>${language['name']}</span>`;
+            if (array != 0) {
+                for (let language of array) {
+                    let style = language == lastLanguage ? "": "border-b";
+                    languagesContainer.innerHTML += `<span data-id='${language['id_language']}' class='cursor-pointer hover:bg-slate-200 px-2 py-1 ${style} border-b-black'>${language['name']}</span>`;
+                }
+            }else{
+                languagesContainer.innerHTML = "<span class='px-2 py-1 text-gray-500'>No languages available</span>";
             }
+
 
             const languageOptions = Array.from(languagesContainer.children);
             languageOptions.forEach(option => {
