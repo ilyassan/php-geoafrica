@@ -10,6 +10,14 @@
         $countries[] = $data;
     };
 
+    $sql = "SELECT * FROM languages";
+    $result = mysqli_query($conn, $sql);
+
+    $languages = [];
+    while ($data = mysqli_fetch_assoc($result)) {
+        $languages[] = $data;
+    };
+
     function countryMapHtmlElement($id, $country, $countryShortName, $x, $y) {
         return "
             <a href='./details.php?id=$id' class='absolute cursor-pointer group' style='left: $x%; top: $y%;'>
@@ -27,9 +35,9 @@
         ";
     }    
     
-    function countryCardHtml($id, $name, $imageUrl, $description) {
+    function countryCardHtml($id, $name, $imageUrl, $description, $languageId) {
         return "
-            <a href='./details.php?id=$id'  class='h-56 cursor-pointer group relative rounded-lg overflow-hidden'>
+            <a data-language='$languageId' href='./details.php?id=$id'  class='h-56 cursor-pointer group relative rounded-lg overflow-hidden'>
                 <img class='min-h-full' src='$imageUrl' alt='$name'>
                 <div class='absolute top-0 right-0 group-hover:right-full transition-all duration-300 w-full h-full bg-primary bg-opacity-45'></div>
                 <div class='absolute top-0 left-0 group-hover:left-full transition-all duration-300 w-full h-full text-center p-2 py-4 text-white'>
@@ -60,9 +68,16 @@
 
     <div class="container pt-6 pb-12">
         <h1 class="text-center font-bold text-3xl mb-12">Explore Countries</h1>
-        <div class="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2">
+        <div class="gap-4 flex w-fit mb-8">
+            <div class="relative">
+                <input autocomplete="off" id="language" class="bg-[#eee] rounded-lg py-1 pl-2 pr-8 outline-none" type="text" placeholder="Filter by language">
+                <div id="languages" class="flex hidden overflow-hidden absolute top-[110%] z-10 bg-[#eee] rounded-lg w-full flex-col"></div>
+            </div>
+            <button id="reset-language" class="mx-auto w-fit bg-primary py-1 px-3 text-white rounded-lg flex gap-2 items-center">Reset</butotn>
+        </div>
+        <div id="cities-cards" class="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2">
             <?php foreach ($countries as $country) {
-                echo countryCardHtml($country["id_country"] ,$country['name'], $country['image_url'], $country['description']);
+                echo countryCardHtml($country["id_country"] ,$country['name'], $country['image_url'], $country['description'], $country["id_language"]);
             }?>
         </div>
 
@@ -75,6 +90,72 @@
                 element.style.left = `${parseInt(element.style.left) - 2.35}%`;
                 element.style.top = `${parseInt(element.style.top) - 2.35}%`;
             })
+        }
+
+        const citiesContainer = document.getElementById("cities-cards");
+        const languages = <?= json_encode($languages) ?>
+
+        const languageInput = document.getElementById("language");
+        const languagesContainer = document.getElementById("languages");
+
+        const resetLanguageButton = document.getElementById("reset-language");
+        resetLanguageButton.onclick = function(){
+            languageInput.value = "";
+                                
+            Array.from(citiesContainer.children).forEach((card) => {
+                card.classList.remove("hidden");
+            });
+        }
+
+        languageInput.onblur = () => closeOptionsContainer(languagesContainer, filterByLanguage);
+        languageInput.onfocus = () => openOptionsContainer(languagesContainer, filterByLanguage);
+        languageInput.onkeyup = filterByLanguage;
+
+        function filterByLanguage(){
+            let filteredArray = languages.filter(city => city["name"].toLowerCase().search(languageInput.value.toLowerCase()) != -1);
+            filterLanguagesOptions(filteredArray);
+        }
+
+        function filterLanguagesOptions(array){
+            languagesContainer.innerHTML = "";
+            let lastLanguage = array[array.length - 1];
+
+            if (array != 0) {
+                for (let language of array) {
+                    let style = language == lastLanguage ? "": "border-b";
+                    languagesContainer.innerHTML += `<span data-id='${language['id_language']}' class='cursor-pointer hover:bg-slate-200 px-2 py-1 ${style} border-b-black'>${language['name']}</span>`;
+                }
+            }else{
+                languagesContainer.innerHTML = "<span class='px-2 py-1 text-gray-500'>No languages available</span>";
+            }
+
+            const languageOptions = Array.from(languagesContainer.children);
+            languageOptions.forEach(option => {
+                option.onmousedown = function(){
+                    let languageId = option.getAttribute("data-id");
+                    languageInput.value = option.textContent;
+                    
+                    Array.from(citiesContainer.children).forEach((card) => {
+                        let cityLanguageId = card.getAttribute("data-language");
+
+                        if (languageId == cityLanguageId) {
+                            card.classList.remove("hidden");
+                        }
+                        else{
+                            card.classList.add("hidden");
+                        }
+                    });
+                }
+            });
+        }
+
+        function closeOptionsContainer(element, func) {
+            func();
+            element.classList.add("hidden");
+        }
+        function openOptionsContainer(element, func) {
+            func();
+            element.classList.remove("hidden");
         }
     </script>
 
