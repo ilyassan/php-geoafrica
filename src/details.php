@@ -2,30 +2,36 @@
     include("./inc/database.php");
     include("./inc/header.php");
 
-    if (!isset($_GET["id"])) {
-        die();
+    if (!isset($_GET["id"]) || !filter_var($_GET["id"], FILTER_VALIDATE_INT)) {
+        die("Invalid ID parameter.");
     }
 
-    $country_id = $_GET["id"];
-    $sql = "SELECT countries.*, languages.name as language FROM countries
-            JOIN languages ON languages.id_language = countries.id_language
-            WHERE id_country = $country_id";
+    $country_id = (int) $_GET["id"];
 
-    $data = mysqli_query($conn, $sql);
-    $country = mysqli_fetch_assoc($data);
+    $stmt = $conn->prepare( "SELECT countries.*, languages.name as language FROM countries
+    JOIN languages ON languages.id_language = countries.id_language
+    WHERE id_country = ?");
 
-    $sql = "SELECT * FROM cities
-            WHERE id_country = $country_id";
+    $stmt->bind_param("i", $country_id);
+    $stmt->execute();
+    $data = $stmt->get_result();
+    $country = $data->fetch_assoc();
 
-    $data = mysqli_query($conn, $sql);
+    $stmt = $conn->prepare("SELECT * FROM cities
+            WHERE id_country = ?");
+    $stmt->bind_param("i", $country_id);
+    $stmt->execute();
+
+    $data = $stmt->get_result();
     $cities = [];
     while ($city = mysqli_fetch_assoc($data)) {
         $cities[] = $city; 
     }
 
-    $sql = "SELECT * FROM languages";
+    $stmt = $conn->prepare("SELECT * FROM languages");
+    $stmt->execute();
 
-    $data = mysqli_query($conn, $sql);
+    $data = $stmt->get_result();
     $languages = [];
     while ($language = mysqli_fetch_assoc($data)) {
         $languages[] = $language; 

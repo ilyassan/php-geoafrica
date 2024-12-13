@@ -7,11 +7,11 @@ $countryId = filter_input(INPUT_POST, 'id_country', FILTER_SANITIZE_NUMBER_INT);
 $languageId = filter_input(INPUT_POST, 'id_language', FILTER_SANITIZE_NUMBER_INT);
 
 if ($countryId && $languageId && $population && $population >= 1) {
-    $sql = "UPDATE countries 
-            SET population = $population, id_language = $languageId 
-            WHERE id_country = $countryId";
-    
-    mysqli_query($conn, $sql);
+    $stmt = $conn->prepare("UPDATE countries 
+            SET population = ?, id_language = ? 
+            WHERE ? = $countryId");
+    $stmt->bind_param("iii", $population, $languageId, $countryId);
+    $stmt->execute();
     $_SESSION['status'] = 'success';
     $_SESSION['message'] = 'Country updated successfully!';
 
